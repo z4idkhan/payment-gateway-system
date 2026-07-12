@@ -1,6 +1,6 @@
 package com.project.razorpay.payment.entity;
 
-import com.project.razorpay.common.Money;
+import com.project.razorpay.common.entity.Money;
 import com.project.razorpay.common.enums.PaymentMethod;
 import com.project.razorpay.common.enums.PaymentStatus;
 import jakarta.persistence.*;

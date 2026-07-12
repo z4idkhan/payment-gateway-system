@@ -1,6 +1,6 @@
 package com.project.razorpay.payment.entity;
 
-import com.project.razorpay.common.Money;
+import com.project.razorpay.common.entity.Money;
 import com.project.razorpay.common.enums.OrderStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -8,7 +8,6 @@ import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity
