@@ -1,11 +1,18 @@
 package com.project.paymentgateway.merchant.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "customers")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+
 public class Customer {
 
     @Id
@@ -26,3 +33,5 @@ public class Customer {
     private String contactNumber;
 
 }
+
+
