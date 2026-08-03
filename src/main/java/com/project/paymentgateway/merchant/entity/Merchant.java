@@ -1,0 +1,62 @@
+package com.project.paymentgateway.merchant.entity;
+
+import com.project.paymentgateway.common.enums.BusinessType;
+import com.project.paymentgateway.common.enums.MerchantStatus;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.UUID;
+
+@Entity
+@Table(name = "merchant")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
+public class Merchant {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(name = "NAME", nullable = false, length = 200)
+    private String name;
+
+    @Column(unique = true, length = 200)
+    private String email;
+
+    @Column(length = 20)
+    private String contactNumber;
+
+    @Column(name = "BUSINESS_TYPE", length = 50)
+    @Enumerated(EnumType.STRING)
+    private BusinessType businessType;
+
+    @Column(length = 100)
+    private String businessName;
+
+    @Column(length = 200)
+    private String websiteUrl;
+
+    @Column(nullable = false,length = 200)
+    @Enumerated(EnumType.STRING)
+    private MerchantStatus status;
+
+    @Column(length = 20)
+    private String gstId;
+
+    @Column(length = 200)
+    private String panId;
+
+    @Column(length = 20)
+    private String settelmentBankAccount;
+
+    @Column(length = 20)
+    private String settelmentBankIfsc;
+
+    @Column(length = 200)
+    private String settelmentBankAccountHolderName;
+
+}
