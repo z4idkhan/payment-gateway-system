@@ -1,7 +1,9 @@
 package com.project.paymentgateway.merchant.services.impl;
 import com.project.paymentgateway.common.enums.MerchantStatus;
+import com.project.paymentgateway.common.enums.UserRole;
 import com.project.paymentgateway.merchant.dto.request.MerchantSignupRequest;
 import com.project.paymentgateway.merchant.dto.response.MerchantResponse;
+import com.project.paymentgateway.merchant.entity.AppUser;
 import com.project.paymentgateway.merchant.entity.Merchant;
 import com.project.paymentgateway.merchant.repository.AppUserRepository;
 import com.project.paymentgateway.merchant.repository.MerchantRepository;
@@ -37,6 +39,13 @@ public class AuthServiceImpl implements AuthServiceInterface {
                 .name(request.name())
                 .email(request.email())
                 .status(MerchantStatus.PENDING_KYC)
+                .build();
+
+        AppUser appUser = AppUser.builder()
+                .email(request.email())
+                .merchant(merchant)
+                .passwordHash(request.password())
+                .role(UserRole.OWNER)
                 .build();
 
         return null;
