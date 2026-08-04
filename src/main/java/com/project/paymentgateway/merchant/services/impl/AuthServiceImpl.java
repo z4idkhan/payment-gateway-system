@@ -40,14 +40,18 @@ public class AuthServiceImpl implements AuthServiceInterface {
                 .email(request.email())
                 .status(MerchantStatus.PENDING_KYC)
                 .build();
+        merchant = merchRepo.save(merchant);
 
         AppUser appUser = AppUser.builder()
                 .email(request.email())
                 .merchant(merchant)
-                .passwordHash(request.password())
+                .passwordHash(request.password())  //TODO : Encrypt using Bcrypt
                 .role(UserRole.OWNER)
                 .build();
+        appUser =appUserRepo.save(appUser);
 
-        return null;
+        return new  MerchantResponse(merchant.getId(), merchant.getName(),
+                merchant.getEmail(), merchant.getBusinessName(),
+                merchant.getBusinessType(), merchant.getStatus());
     }
 }
