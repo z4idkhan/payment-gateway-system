@@ -5,7 +5,6 @@ import com.project.paymentgateway.merchant.dto.response.MerchantResponse;
 import com.project.paymentgateway.merchant.services.AuthServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private AuthServiceInterface service;
+private final AuthServiceInterface service;
 
-    @PostMapping
-    public ResponseEntity<MerchantResponse> signup(@RequestBody @Valid MerchantSignupRequest request){
+    @PostMapping("/signup")
+    public ResponseEntity<MerchantResponse> signup(
+            @RequestBody @Valid MerchantSignupRequest request) {
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(service.signup(request));
     }
