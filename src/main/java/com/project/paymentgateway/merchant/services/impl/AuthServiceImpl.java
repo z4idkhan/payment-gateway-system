@@ -1,7 +1,7 @@
 package com.project.paymentgateway.merchant.services.impl;
 import com.project.paymentgateway.common.enums.MerchantStatus;
 import com.project.paymentgateway.common.enums.UserRole;
-import com.project.paymentgateway.common.exception.DuplicateResurceException;
+import com.project.paymentgateway.common.exception.DuplicateResourceException;
 import com.project.paymentgateway.merchant.dto.request.MerchantSignupRequest;
 import com.project.paymentgateway.merchant.dto.response.MerchantResponse;
 import com.project.paymentgateway.merchant.entity.AppUser;
@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthServiceInterface {
     public MerchantResponse signup(MerchantSignupRequest request) {
 
         if(merchRepo.existsByEmail(request.email())){
-            throw new DuplicateResurceException("DUPLICAT_MERCHANT_EMAL","Merchant with Email Already exist: " + request.email());
+            throw new DuplicateResourceException("DUPLICAT_MERCHANT_EMAL","Merchant with Email Already exist: " + request.email());
         }
 
         Merchant merchant = Merchant.builder()
