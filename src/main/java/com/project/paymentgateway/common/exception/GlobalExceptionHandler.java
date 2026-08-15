@@ -19,6 +19,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNotFound(ResourseNotFoundException excep){
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ErrorResponse.of(excep.get));
+                .body(ErrorResponse.of(excep.getResourceName(),excep.getMessage()));
     }
 }

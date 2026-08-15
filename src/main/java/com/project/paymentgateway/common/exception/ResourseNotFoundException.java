@@ -8,8 +8,8 @@ public class ResourseNotFoundException extends RuntimeException {
     private final String resourceName;
     private final String identifier;
 
-    public ResourseNotFoundException(String message, String resourceName, String identifier) {
-        super(message);
+    public ResourseNotFoundException(String resourceName, String identifier) {
+        super(resourceName+"Not Found: "+identifier);
         this.resourceName = resourceName;
         this.identifier = identifier;
     }
