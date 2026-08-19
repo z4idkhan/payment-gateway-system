@@ -3,12 +3,12 @@ package com.project.paymentgateway.common.exception;
 import lombok.Getter;
 
 @Getter
-public class ResourseNotFoundException extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException {
 
     private final String resourceName;
-    private final String identifier;
+    private final Object identifier;
 
-    public ResourseNotFoundException(String resourceName, String identifier) {
+    public ResourceNotFoundException(String resourceName, Object identifier) {
         super(resourceName+"Not Found: "+identifier);
         this.resourceName = resourceName;
         this.identifier = identifier;
