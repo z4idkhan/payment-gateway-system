@@ -2,11 +2,17 @@ package com.project.paymentgateway.merchant.entity;
 
 import com.project.paymentgateway.common.enums.Environment;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "api_keys")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ApiKey {
 
     @Id
