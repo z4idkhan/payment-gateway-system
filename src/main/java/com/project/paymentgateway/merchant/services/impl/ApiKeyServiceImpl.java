@@ -1,7 +1,9 @@
 package com.project.paymentgateway.merchant.services.impl;
 
 import com.project.paymentgateway.common.exception.ResourceNotFoundException;
+import com.project.paymentgateway.common.util.RandomizerUtil;
 import com.project.paymentgateway.merchant.dto.request.CreateApiKeyRequest;
+import com.project.paymentgateway.merchant.dto.response.ApiKeyCreateResponse;
 import com.project.paymentgateway.merchant.dto.response.ApiKeyResponse;
 import com.project.paymentgateway.merchant.entity.ApiKey;
 import com.project.paymentgateway.merchant.entity.Merchant;
@@ -13,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,11 +30,12 @@ public class ApiKeyServiceImpl implements ApiKeyService {
     ApiKeyRepository apirepo;
 
     @Override
-    public ApiKeyResponse create(UUID merchantId, CreateApiKeyRequest request) {
+    public ApiKeyCreateResponse create(UUID merchantId, CreateApiKeyRequest request) {
         Merchant merchant = merchrepo.findById(merchantId)
                 .orElseThrow(()->new ResourceNotFoundException("merchant with id: ", merchantId));
-        String keyId = "rzp"+request.environment().name().toUpperCase()+"big_random_String";
-        String rawSecret ="big_random_sseret" ; //TODO: replace with cruptographic random HEX
+
+        String keyId = "rzp_" + request.environment().name().toLowerCase() + "_" + RandomizerUtil.randomBase64(24);
+        String rawSecret = RandomizerUtil.randomBase64(48);
 
         ApiKey apiKey = ApiKey.builder()
                 .keyId(keyId)
@@ -42,6 +46,26 @@ public class ApiKeyServiceImpl implements ApiKeyService {
 
         apiKey = apirepo.save(apiKey);
 
-        return new ApiKeyResponse(apiKey.getId(), keyId, rawSecret, request.environment());
+        return new ApiKeyCreateResponse(apiKey.getId(), keyId, rawSecret, request.environment());
+    }
+
+    @Override
+    public List<ApiKeyResponse> listByMerchant(UUID merchId) {
+        return apirepo.findByMerchant_Id(merchId).stream()
+                .map(ak -> new ApiKeyResponse(
+                        ak.getId(),
+                        ak.getKeyId(),
+                        ak.getEnvironment(),
+                        ak.isEnabled(),
+                        ak.getLastUsedAt(),null ))
+                .toList();
+    }
+
+    @Override
+    public void revoke(UUID merchantId, UUID keyId) {
+        ApiKey key = apirepo.findById(keyId)
+                .filter(k -> k.getMerchant().getId().equals(merchantId))
+                .orElseThrow(() -> new ResourceNotFoundException("API key with id: ", keyId));
+        key.setEnabled(false);
     }
 }
