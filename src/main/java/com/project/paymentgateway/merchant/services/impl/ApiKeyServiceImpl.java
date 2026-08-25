@@ -13,7 +13,9 @@ import com.project.paymentgateway.merchant.services.ApiKeyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.UUID;
@@ -67,5 +69,14 @@ public class ApiKeyServiceImpl implements ApiKeyService {
                 .filter(k -> k.getMerchant().getId().equals(merchantId))
                 .orElseThrow(() -> new ResourceNotFoundException("API key with id: ", keyId));
         key.setEnabled(false);
+    }
+
+    @Override
+    public ApiKeyCreateResponse rotate(UUID merchantId, UUID keyId) {
+        ApiKey key = apirepo.findById(keyId)
+                .filter(k -> k.getMerchant().getId().equals(merchantId))
+                .orElseThrow(() -> new ResourceNotFoundException("API key with id: ", keyId));
+
+        return null;
     }
 }

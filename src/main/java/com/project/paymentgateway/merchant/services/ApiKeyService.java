@@ -13,4 +13,6 @@ public interface ApiKeyService {
     List<ApiKeyResponse> listByMerchant(UUID merchId);
 
     void revoke(UUID merchantId, UUID keyId);
+
+    ApiKeyCreateResponse rotate(UUID merchantId, UUID keyId);
 }
