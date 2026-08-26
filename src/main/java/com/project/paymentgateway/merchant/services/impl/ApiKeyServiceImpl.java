@@ -13,10 +13,9 @@ import com.project.paymentgateway.merchant.services.ApiKeyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,10 +72,17 @@ public class ApiKeyServiceImpl implements ApiKeyService {
 
     @Override
     public ApiKeyCreateResponse rotate(UUID merchantId, UUID keyId) {
-        ApiKey key = apirepo.findById(keyId)
+        ApiKey akey = apirepo.findById(keyId)
                 .filter(k -> k.getMerchant().getId().equals(merchantId))
                 .orElseThrow(() -> new ResourceNotFoundException("API key with id: ", keyId));
 
-        return null;
+        String newRawSecret = RandomizerUtil.randomBase64(48);
+        akey.setPreviouskeySecretHash(akey.getKeySecretHash());
+        akey.setKeySecretHash(newRawSecret); //TODO encode with BcryptPassword
+        akey.setRotatedAt(LocalDateTime.now());
+        akey.setGetPeriodExpiresAt(LocalDateTime.now().plusHours(24));
+        akey = apirepo.save(akey);
+
+        return new ApiKeyCreateResponse(akey.getId(), akey.getKeyId(), newRawSecret, akey.getEnvironment());
     }
 }
