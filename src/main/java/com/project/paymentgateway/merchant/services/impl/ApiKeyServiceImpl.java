@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(readOnly = true)
 public class ApiKeyServiceImpl implements ApiKeyService {
 
     @Autowired
@@ -31,6 +33,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
     ApiKeyRepository apirepo;
 
     @Override
+    @Transactional
     public ApiKeyCreateResponse create(UUID merchantId, CreateApiKeyRequest request) {
         Merchant merchant = merchrepo.findById(merchantId)
                 .orElseThrow(()->new ResourceNotFoundException("merchant with id: ", merchantId));
@@ -63,6 +66,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
     }
 
     @Override
+    @Transactional
     public void revoke(UUID merchantId, UUID keyId) {
         ApiKey key = apirepo.findById(keyId)
                 .filter(k -> k.getMerchant().getId().equals(merchantId))
@@ -71,6 +75,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
     }
 
     @Override
+    @Transactional
     public ApiKeyCreateResponse rotate(UUID merchantId, UUID keyId) {
         ApiKey apkey = apirepo.findById(keyId)
                 .filter(k -> k.getMerchant().getId().equals(merchantId))
@@ -83,6 +88,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
         apkey.setGetPeriodExpiresAt(LocalDateTime.now().plusHours(24));
         apkey = apirepo.save(apkey);
 
-        return new ApiKeyCreateResponse(apkey.getId(), apkey.getKeyId(), newRawSecret, apkey.getEnvironment());
+        return new ApiKeyCreateResponse(apkey.getId(), apkey.getKeyId(),
+                newRawSecret, apkey.getEnvironment());
     }
 }

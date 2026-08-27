@@ -9,7 +9,7 @@ import com.project.paymentgateway.merchant.entity.Merchant;
 import com.project.paymentgateway.merchant.repository.AppUserRepository;
 import com.project.paymentgateway.merchant.repository.MerchantRepository;
 import com.project.paymentgateway.merchant.services.AuthServiceInterface;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
