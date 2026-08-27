@@ -72,17 +72,17 @@ public class ApiKeyServiceImpl implements ApiKeyService {
 
     @Override
     public ApiKeyCreateResponse rotate(UUID merchantId, UUID keyId) {
-        ApiKey akey = apirepo.findById(keyId)
+        ApiKey apkey = apirepo.findById(keyId)
                 .filter(k -> k.getMerchant().getId().equals(merchantId))
                 .orElseThrow(() -> new ResourceNotFoundException("API key with id: ", keyId));
 
         String newRawSecret = RandomizerUtil.randomBase64(48);
-        akey.setPreviouskeySecretHash(akey.getKeySecretHash());
-        akey.setKeySecretHash(newRawSecret); //TODO encode with BcryptPassword
-        akey.setRotatedAt(LocalDateTime.now());
-        akey.setGetPeriodExpiresAt(LocalDateTime.now().plusHours(24));
-        akey = apirepo.save(akey);
+        apkey.setPreviouskeySecretHash(apkey.getKeySecretHash());
+        apkey.setKeySecretHash(newRawSecret); //TODO encode with BcryptPassword
+        apkey.setRotatedAt(LocalDateTime.now());
+        apkey.setGetPeriodExpiresAt(LocalDateTime.now().plusHours(24));
+        apkey = apirepo.save(apkey);
 
-        return new ApiKeyCreateResponse(akey.getId(), akey.getKeyId(), newRawSecret, akey.getEnvironment());
+        return new ApiKeyCreateResponse(apkey.getId(), apkey.getKeyId(), newRawSecret, apkey.getEnvironment());
     }
 }
