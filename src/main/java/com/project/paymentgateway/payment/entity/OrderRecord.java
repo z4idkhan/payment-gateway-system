@@ -2,6 +2,7 @@ package com.project.paymentgateway.payment.entity;
 
 import com.project.paymentgateway.common.entity.Money;
 import com.project.paymentgateway.common.enums.OrderStatus;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -23,6 +24,9 @@ public class OrderRecord {
 
     @Embedded
     private Money amount;
+
+    @Column(length = 100)
+    private String receipt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false,length = 20)

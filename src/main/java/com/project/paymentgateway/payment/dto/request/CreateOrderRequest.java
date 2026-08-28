@@ -7,8 +7,12 @@ import java.util.Map;
 
 public record CreateOrderRequest(
         Money amount,
+
         String receipt,
+
         Map<String, Object> notes,
+
         LocalDateTime expiresAt
+
 ) {
 }
