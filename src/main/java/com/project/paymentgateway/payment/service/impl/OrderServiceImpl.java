@@ -21,7 +21,7 @@ public class OrderServiceImpl implements OrderService {
         UUID merchantId = null;
 
         if (orderRepository.existsByMerchantIdAndReceipt(merchantId, request.receipt())) {
-            throw new DuplicateResourceException("ORDER_WITH_THE_GIVEN_RECEIPT_ALREADY_EXISTS","Order with Reciept Already Exist");
+            throw new DuplicateResourceException("ORDER_RECEIPT_DUPLICATE","Order with Reciept Already Exist");
         }
 
         return null;
