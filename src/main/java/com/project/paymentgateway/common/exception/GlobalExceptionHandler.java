@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(DuplicateResourceException.class)
-    public ResponseEntity<ErrorResponse> handleDuplicateResources(DuplicateResourceException excep){
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleDuplicateResources(DuplicateResourceException excep) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(ErrorResponse.of(excep.getErrorCode(),excep.getMessage()));
+                .body(ErrorResponse.of(excep.getErrorCode(), excep.getMessage()));
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException excep){
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException excep) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ErrorResponse.of(excep.getResourceName(),excep.getMessage()));
+                .body(ErrorResponse.of(excep.getResourceName(), excep.getMessage()));
     }
 }
