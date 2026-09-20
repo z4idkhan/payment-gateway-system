@@ -81,6 +81,8 @@ public class ApiKeyServiceImpl implements ApiKeyService {
                 .filter(k -> k.getMerchant().getId().equals(merchantId))
                 .orElseThrow(() -> new ResourceNotFoundException("API key with id: ", keyId));
 
+
+
         String newRawSecret = RandomizerUtil.randomBase64(48);
         apkey.setPreviouskeySecretHash(apkey.getKeySecretHash());
         apkey.setKeySecretHash(newRawSecret); //TODO encode with BcryptPassword
