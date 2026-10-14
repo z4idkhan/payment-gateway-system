@@ -81,7 +81,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
                 .filter(k -> k.getMerchant().getId().equals(merchantId))
                 .orElseThrow(() -> new ResourceNotFoundException("API key with id: ", keyId));
 
-
+        if(!apkey.isEnabled()) throw new RuntimeException("Cannot Create a disabled key");
 
         String newRawSecret = RandomizerUtil.randomBase64(48);
         apkey.setPreviouskeySecretHash(apkey.getKeySecretHash());
