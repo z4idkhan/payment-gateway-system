@@ -4,6 +4,7 @@ import com.project.paymentgateway.common.enums.OrderStatus;
 import com.project.paymentgateway.common.exception.DuplicateResourceException;
 import com.project.paymentgateway.payment.dto.request.CreateOrderRequest;
 import com.project.paymentgateway.payment.dto.response.OrderResponse;
+import com.project.paymentgateway.payment.dto.response.PaymentResponse;
 import com.project.paymentgateway.payment.entity.OrderRecord;
 import com.project.paymentgateway.payment.repository.OrderRepository;
 import com.project.paymentgateway.payment.service.OrderService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -44,6 +46,8 @@ public class OrderServiceImpl implements OrderService {
 
         order = orderRepository.save(order);
 
+//TODO : publish Kafka Event about order creation
+
         return new OrderResponse(
                 order.getId(),
                 order.getMerchantId(),
@@ -55,6 +59,21 @@ public class OrderServiceImpl implements OrderService {
                 order.getExpiresAt(),
                 null
         );
+    }
+
+    @Override
+    public OrderResponse getByID(UUID merchantId, UUID orderId) {
+        return null;
+    }
+
+    @Override
+    public OrderResponse cancel(UUID merchantId, UUID orderId) {
+        return null;
+    }
+
+    @Override
+    public List<PaymentResponse> getPayments(UUID merchantId, UUID orderId) {
+        return List.of();
     }
 
 }
